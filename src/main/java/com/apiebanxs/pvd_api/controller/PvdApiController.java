@@ -24,7 +24,7 @@ public class PvdApiController {
     @RequestParam("account_id") Integer account_id
   ) {
     var balance = accountService.findById(account_id).getBalance();
-    return ResponseEntity.ok(balance);
+    return ResponseEntity.status(200).body(balance);
   }
 
   @PostMapping("/event")
@@ -58,6 +58,6 @@ public class PvdApiController {
         );
     }
 
-    return ResponseEntity.ok(finalDto);
+    return ResponseEntity.status(201).body(finalDto);
   }
 }

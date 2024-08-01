@@ -1,11 +1,11 @@
 package com.apiebanxs.pvd_api.service.impl;
 
 import com.apiebanxs.pvd_api.dto.TransferDto;
+import com.apiebanxs.pvd_api.error.AccountNotFoundException;
 import com.apiebanxs.pvd_api.model.Account;
 import com.apiebanxs.pvd_api.repository.AccountRepository;
 import com.apiebanxs.pvd_api.service.AccountService;
 import java.util.NoSuchElementException;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
   public Account findById(Integer account_id) {
     return accountRepository
       .findById(account_id)
-      .orElseThrow(NoSuchElementException::new);
+      .orElseThrow(() -> new AccountNotFoundException("teste"));
   }
 
   @Override
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
   public TransferDto withdraw(Integer account_id, Integer amount) {
     Account accountToWithdraw = accountRepository
       .findById(account_id)
-      .orElseThrow(NoSuchElementException::new);
+      .orElseThrow(() -> new AccountNotFoundException("0"));
 
     if (accountToWithdraw.getBalance() < amount) {
       throw new NoSuchElementException();
@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
   ) {
     Account accountOfOrigin = accountRepository
       .findById(origin)
-      .orElseThrow(NoSuchElementException::new);
+      .orElseThrow(() -> new AccountNotFoundException("0"));
     Account accountOfDestination = accountRepository
       .findById(destination)
       .orElse(new Account(destination, amount));
