@@ -11,7 +11,7 @@
 	<groupId>com.apiebanxs</groupId>
 	<artifactId>pvd-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>e-learning</name>
+	<name>pvd-api</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

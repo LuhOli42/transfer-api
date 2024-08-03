@@ -6,7 +6,6 @@ import com.apiebanxs.pvd_api.model.Account;
 import com.apiebanxs.pvd_api.repository.AccountRepository;
 import com.apiebanxs.pvd_api.service.AccountService;
 import java.util.NoSuchElementException;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 @Service
