@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
   public Account findById(Integer account_id) {
     return accountRepository
       .findById(account_id)
-      .orElseThrow(() -> new AccountNotFoundException("teste"));
+      .orElseThrow(AccountNotFoundException::new);
   }
 
   @Override
@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
   public TransferDto withdraw(Integer account_id, Integer amount) {
     Account accountToWithdraw = accountRepository
       .findById(account_id)
-      .orElseThrow(() -> new AccountNotFoundException("0"));
+      .orElseThrow(AccountNotFoundException::new);
 
     if (accountToWithdraw.getBalance() < amount) {
       throw new NoSuchElementException();
@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
   ) {
     Account accountOfOrigin = accountRepository
       .findById(origin)
-      .orElseThrow(() -> new AccountNotFoundException("0"));
+      .orElseThrow(AccountNotFoundException::new);
     Account accountOfDestination = accountRepository
       .findById(destination)
       .orElse(new Account(destination, amount));
