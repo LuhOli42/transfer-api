@@ -4,8 +4,9 @@ import com.apiebanxs.pvd_api.dto.TransferDto;
 import com.apiebanxs.pvd_api.model.Account;
 
 public interface AccountService {
-  Account findById(Integer account_id);
-  TransferDto deposit(Integer account_id, Integer amount);
-  TransferDto withdraw(Integer account_id, Integer amount);
-  TransferDto transfer(Integer origin, Integer amount, Integer destination);
+  void resetAPI();
+  Account findById(String account_id);
+  TransferDto deposit(String id, Integer amount);
+  TransferDto withdraw(String id, Integer amount);
+  TransferDto transfer(String origin, Integer amount, String destination);
 }

@@ -32,8 +32,6 @@ public class TransferDto {
 
   @Override
   public String toString() {
-    return (
-      "TransferDto [origin=" + origin + ", destination=" + destination + "]"
-    );
+    return ("{origin: " + origin + ", destination: " + destination + "}");
   }
 }

@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Min;
 public class Account {
 
   @Id
-  private Integer account_id;
+  private String id;
 
   @Min(0)
   @Column(nullable = false)
@@ -19,17 +19,17 @@ public class Account {
 
   public Account() {}
 
-  public Account(Integer account_id, @Min(0) Integer balance) {
-    this.account_id = account_id;
+  public Account(String id, @Min(0) Integer balance) {
+    this.id = id;
     this.balance = balance;
   }
 
-  public Integer getAccount_id() {
-    return account_id;
+  public String getId() {
+    return id;
   }
 
-  public void setAccount_id(Integer account_id) {
-    this.account_id = account_id;
+  public void setId(String id) {
+    this.id = id;
   }
 
   public Integer getBalance() {
@@ -38,5 +38,10 @@ public class Account {
 
   public void setBalance(Integer balance) {
     this.balance = balance;
+  }
+
+  @Override
+  public String toString() {
+    return "{id:" + id + ", balance:" + balance + "}";
   }
 }

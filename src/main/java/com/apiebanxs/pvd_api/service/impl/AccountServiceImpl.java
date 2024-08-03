@@ -6,6 +6,7 @@ import com.apiebanxs.pvd_api.model.Account;
 import com.apiebanxs.pvd_api.repository.AccountRepository;
 import com.apiebanxs.pvd_api.service.AccountService;
 import java.util.NoSuchElementException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,32 +19,37 @@ public class AccountServiceImpl implements AccountService {
   }
 
   @Override
-  public Account findById(Integer account_id) {
+  public void resetAPI() {
+    accountRepository.deleteAll();
+  }
+
+  @Override
+  public Account findById(String account_id) {
     return accountRepository
       .findById(account_id)
       .orElseThrow(AccountNotFoundException::new);
   }
 
   @Override
-  public TransferDto deposit(Integer account_id, Integer amount) {
+  public TransferDto deposit(String id, Integer amount) {
     Account accountToDeposit = accountRepository
-      .findById(account_id)
-      .orElse(new Account(account_id, amount));
+      .findById(id)
+      .orElse(new Account(id, amount));
 
-    if (accountRepository.existsById(account_id)) {
+    if (accountRepository.existsById(id)) {
       accountToDeposit.setBalance(accountToDeposit.getBalance() + amount);
     }
 
     accountRepository.save(accountToDeposit);
 
-    TransferDto newDto = new TransferDto(accountToDeposit, null);
+    TransferDto newDto = new TransferDto(null, accountToDeposit);
     return newDto;
   }
 
   @Override
-  public TransferDto withdraw(Integer account_id, Integer amount) {
+  public TransferDto withdraw(String id, Integer amount) {
     Account accountToWithdraw = accountRepository
-      .findById(account_id)
+      .findById(id)
       .orElseThrow(AccountNotFoundException::new);
 
     if (accountToWithdraw.getBalance() < amount) {
@@ -53,27 +59,23 @@ public class AccountServiceImpl implements AccountService {
     accountToWithdraw.setBalance(accountToWithdraw.getBalance() - amount);
     accountRepository.save(accountToWithdraw);
 
-    TransferDto newDto = new TransferDto(null, accountToWithdraw);
+    TransferDto newDto = new TransferDto(accountToWithdraw, null);
 
     return newDto;
   }
 
   @Override
   public TransferDto transfer(
-    Integer origin,
+    String origin,
     Integer amount,
-    Integer destination
+    String destination
   ) {
-    Account accountOfOrigin = accountRepository
-      .findById(origin)
-      .orElseThrow(AccountNotFoundException::new);
-    Account accountOfDestination = accountRepository
-      .findById(destination)
-      .orElse(new Account(destination, amount));
+    TransferDto accountOfOrigin = this.withdraw(origin, amount);
+    TransferDto accountOfDestination = this.deposit(destination, amount);
 
-    this.withdraw(origin, amount);
-    this.deposit(destination, amount);
-
-    return new TransferDto(accountOfOrigin, accountOfDestination);
+    return new TransferDto(
+      accountOfOrigin.getOrigin(),
+      accountOfDestination.getDestination()
+    );
   }
 }

@@ -3,6 +3,7 @@ package com.apiebanxs.pvd_api.controller;
 import com.apiebanxs.pvd_api.dto.RequestDto;
 import com.apiebanxs.pvd_api.dto.TransferDto;
 import com.apiebanxs.pvd_api.service.AccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +20,15 @@ public class PvdApiController {
     this.accountService = accountService;
   }
 
+  @PostMapping("/reset")
+  public ResponseEntity<String> reset() {
+    accountService.resetAPI();
+    return ResponseEntity.status(200).body("OK");
+  }
+
   @GetMapping("/balance")
   public ResponseEntity<Integer> balance(
-    @RequestParam("account_id") Integer account_id
+    @RequestParam("account_id") String account_id
   ) {
     var balance = accountService.findById(account_id).getBalance();
     return ResponseEntity.status(200).body(balance);
@@ -30,7 +37,7 @@ public class PvdApiController {
   @PostMapping("/event")
   public ResponseEntity<TransferDto> event(
     @RequestBody RequestDto requestedDto
-  ) {
+  ) throws JsonProcessingException {
     TransferDto finalDto = null;
 
     if (requestedDto.getType().equals("deposit")) {

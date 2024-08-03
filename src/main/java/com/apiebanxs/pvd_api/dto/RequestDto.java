@@ -3,16 +3,16 @@ package com.apiebanxs.pvd_api.dto;
 public class RequestDto {
 
   private String type;
-  private Integer destination;
-  private Integer origin;
+  private String destination;
+  private String origin;
   private Integer amount;
 
   public RequestDto() {}
 
   public RequestDto(
     String type,
-    Integer destination,
-    Integer origin,
+    String destination,
+    String origin,
     Integer amount
   ) {
     this.type = type;
@@ -29,19 +29,19 @@ public class RequestDto {
     this.type = type;
   }
 
-  public Integer getDestination() {
+  public String getDestination() {
     return destination;
   }
 
-  public void setDestination(Integer destination) {
+  public void setDestination(String destination) {
     this.destination = destination;
   }
 
-  public Integer getOrigin() {
+  public String getOrigin() {
     return origin;
   }
 
-  public void setOrigin(Integer origin) {
+  public void setOrigin(String origin) {
     this.origin = origin;
   }
 
